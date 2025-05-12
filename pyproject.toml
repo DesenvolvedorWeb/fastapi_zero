@@ -32,6 +32,8 @@ extend-exclude = [
 preview = true
 select = [
     'E',
+    'B',
+    'N',
     'F',
     'W',
     'I',
