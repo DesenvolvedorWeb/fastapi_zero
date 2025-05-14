@@ -17,5 +17,16 @@ async def hello():
         timestamp=datetime.now()
     )
 
+@router.get("/stats", status_code=HTTPStatus.OK)
+async def api_stats():
+    """Retorna estatísticas do sistema em formato JSON."""
+    return {
+        "success": True,
+        "data": {
+            "users": 1250,
+            "active": 847,
+            "requests": 12345
+        }
+    }
 # Adicione outras rotas de API conforme necessário
 
