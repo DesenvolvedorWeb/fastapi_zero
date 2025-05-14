@@ -3,7 +3,7 @@ from http import HTTPStatus
 import pytest
 from fastapi.testclient import TestClient
 
-from fastapi_zero.app import app
+from fastapi_zero.main import app
 
 
 @pytest.fixture
@@ -20,7 +20,7 @@ def test_root_retorna_ola_mundo(client):
     assert response.status_code == HTTPStatus.OK
     # Como estamos retornando HTML, não podemos verificar o JSON
     # Em vez disso, verificamos se a string está no conteúdo HTML
-    assert 'Olá Mundo!' in response.text
+    assert 'FastAPI Zero' in response.text
 
 
 def test_dashboard_retorna_status_ok(client):

@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from fastapi_zero.schemas import Message
+from fastapi_zero.schemas.schemas import Message
 
 # Use FileSystemLoader em vez de PackageLoader
 env = Environment(loader=FileSystemLoader('templates'), autoescape=select_autoescape())

@@ -1,26 +1,45 @@
 
-## Tailwind CSS
+## Executando o Aplicativo
 
-Este projeto usa Tailwind CSS para estilização. Para trabalhar com o Tailwind:
+Com Poetry:
 
-1. Instale as dependências:
-   ```bash
-   npm install
-   ```
+```bash
+# Instalar dependências
+poetry install
 
-2. Para desenvolvimento (observa mudanças e recompila automaticamente):
-   ```bash
-   npm run watch:css
-   # ou
-   task css
-   ```
+# Executar o aplicativo
+poetry run task run
+# ou
+poetry run python -m fastapi_zero.main
+```
 
-3. Para produção (minifica o CSS):
-   ```bash
-   npm run build:css
-   ```
+Para desenvolvimento, você pode usar o modo de recarga automática:
 
-4. Os estilos são compilados de `static/css/input.css` para `static/css/styles.css`
+```bash
+poetry run uvicorn fastapi_zero.main:app --reload
+```
 
-5. Todas as classes do Tailwind estão disponíveis nos templates HTML
+## Estrutura do Projeto
+
+```
+fastapi_zero/
+├── __init__.py
+├── main.py                  # Ponto de entrada principal
+├── core/                    # Configurações e utilitários centrais
+│   ├── __init__.py
+│   └── config.py            # Configurações da aplicação
+├── routers/                 # Routers para diferentes partes da aplicação
+│   ├── __init__.py
+│   ├── api.py               # Endpoints da API
+│   └── pages.py             # Páginas HTML
+├── models/                  # Modelos de dados
+│   └── __init__.py
+├── schemas/                 # Esquemas Pydantic
+│   ├── __init__.py
+│   └── schemas.py           # Esquemas de dados
+├── services/                # Lógica de negócios
+│   └── __init__.py
+└── templates/               # Templates HTML
+```
+
 
