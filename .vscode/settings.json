@@ -1,3 +1,20 @@
 {
-  "CodeGPT.apiKey": "Ollama"
+  "CodeGPT.apiKey": "Ollama",
+  "cSpell.enabled": true,
+  "cSpell.ignorePaths": [
+    "node_modules",
+    "**/node_modules",
+    "**/node_modules/**",
+    "package-lock.json",
+    "package.json",
+    "*.lock",
+    "dist",
+    "build",
+    ".git",
+    "**/*.min.*"
+  ],
+  "cSpell.ignoreRegExpList": [
+    "[A-Z]{3,}",
+    "\\b[A-Z][a-z]+([A-Z][a-z]+)+\\b"
+  ]
 }
