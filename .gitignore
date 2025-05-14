@@ -254,6 +254,11 @@ dist/
 # Tailwind CSS
 static/css/styles.css
 
+# Executáveis do Tailwind CSS
+tailwindcss-linux-x64
+tailwindcss-macos-*
+tailwindcss-windows-*
+
 # Arquivos de ambiente
 .env.local
 .env.development
@@ -353,3 +358,4 @@ $RECYCLE.BIN/
 .prettierignore
 .prettierrc
 .browserslistrc
+tailwindcss-linux-x64
