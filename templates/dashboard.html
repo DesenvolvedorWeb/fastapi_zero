@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Zero - Dashboard</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/static/favicons/favicon-16.ico" sizes="16x16">
+    <link rel="icon" type="image/x-icon" href="/static/favicons/favicon-32.ico" sizes="32x32">
+    <link rel="icon" type="image/x-icon" href="/static/favicons/favicon-96.ico" sizes="96x96">
+    <link rel="shortcut icon" href="/static/favicons/favicon-32.ico">
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="bg-light text-dark">
+    <header class="bg-white shadow-md px-8 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold text-primary">FastAPI Zero</div>
+        <nav>
+            <a href="/" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded font-medium transition-colors">Home</a>
+        </nav>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-8 py-8">
+        <div class="my-8">
+            <h1 class="text-3xl font-bold text-dark">{{ message }}</h1>
+            <p class="text-lg text-gray">{{ description }}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="text-5xl font-bold text-primary">{{ stats.users }}</div>
+                <div class="text-gray mt-2">Usuários</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="text-5xl font-bold text-primary">{{ stats.active }}</div>
+                <div class="text-gray mt-2">Ativos</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="text-5xl font-bold text-primary">{{ stats.requests }}</div>
+                <div class="text-gray mt-2">Requisições</div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="text-xl font-semibold mb-4 text-primary">Informações do Sistema</div>
+            <p class="mb-2">Versão: {{ version }}</p>
+            <p class="mb-2">Ambiente: {{ environment }}</p>
+            <p>Data: {{ current_date }}</p>
+        </div>
+    </div>
+</body>
+</html>

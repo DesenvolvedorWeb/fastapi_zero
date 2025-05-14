@@ -1,0 +1,29 @@
+{
+  "name": "fastapi_zero",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tailwind.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./static/css/input.css -o ./static/css/styles.css --minify",
+    "watch:css": "tailwindcss -i ./static/css/input.css -o ./static/css/styles.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DesenvolvedorWeb/fastapi_zero.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/DesenvolvedorWeb/fastapi_zero/issues"
+  },
+  "homepage": "https://github.com/DesenvolvedorWeb/fastapi_zero#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.3.5"
+  }
+}
