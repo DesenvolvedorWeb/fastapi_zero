@@ -227,7 +227,7 @@ pyrightconfig.json
 
 ### JavaScript/Node.js ###
 # Dependências
-node_modules/
+/node_modules/
 package-lock.json
 yarn.lock
 .pnp.*
@@ -255,9 +255,9 @@ dist/
 static/css/styles.css
 
 # Executáveis do Tailwind CSS
-tailwindcss-linux-x64
-tailwindcss-macos-*
-tailwindcss-windows-*
+/tailwindcss-linux-x64
+/tailwindcss-macos-*
+/tailwindcss-windows-*
 
 # Arquivos de ambiente
 .env.local
