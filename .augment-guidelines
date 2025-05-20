@@ -1,0 +1,123 @@
+# Diretrizes para o Augment Code
+# Este arquivo ajuda o Augment a entender melhor seu projeto
+
+# Informações do projeto
+project:
+  name: FastAPI Zero
+  description: Um projeto base para aplicações FastAPI com estrutura organizada
+  language: python
+  framework: fastapi
+  version: 0.1.0
+
+# Convenções de código
+conventions:
+  # Estilo de código
+  style:
+    python:
+      line_length: 79
+      quotes: single
+      formatter: ruff
+    html:
+      indent: 4
+      quotes: double
+    javascript:
+      indent: 2
+      quotes: single
+
+  # Padrões de nomenclatura
+  naming:
+    python:
+      classes: PascalCase
+      functions: snake_case
+      variables: snake_case
+      constants: UPPER_SNAKE_CASE
+    javascript:
+      functions: camelCase
+      variables: camelCase
+      constants: UPPER_SNAKE_CASE
+
+# Estrutura do projeto
+structure:
+  core_modules:
+    - fastapi_zero/core
+    - fastapi_zero/routers
+    - fastapi_zero/schemas
+    - fastapi_zero/models
+    - fastapi_zero/services
+
+  templates: templates/
+  static_files: static/
+  tests: tests/
+
+# Dependências principais
+dependencies:
+  - poetry
+  - fastapi
+  - pydantic
+  - jinja2
+  - tailwindcss
+
+# Padrões de design preferidos
+design_patterns:
+  - Repository pattern para acesso a dados
+  - Dependency Injection via FastAPI
+  - Service Layer para lógica de negócios
+  - MVC para separação de responsabilidades
+
+# Práticas recomendadas
+best_practices:
+  - Usar tipagem estática com Python type hints
+  - Documentar APIs com docstrings e OpenAPI
+  - Seguir os princípios SOLID
+  - Escrever testes unitários para novas funcionalidades
+  - Manter a cobertura de testes acima de 80%
+  - Usar async/await para operações I/O bound
+
+# Anti-patterns a serem evitados
+anti_patterns:
+  # Padrões gerais
+  general:
+    - Código duplicado (DRY violation)
+    - Funções ou métodos com mais de 50 linhas
+    - Funções com mais de 5 parâmetros
+    - Comentários óbvios ou desatualizados
+    - Hardcoding de valores que deveriam ser configuráveis
+    - Uso excessivo de variáveis globais
+    - Nomes de variáveis não descritivos (x, temp, foo)
+    - Functions start with verbs
+    - Prevent common mistakes before they happen
+    - Establish clear boundaries for code quality
+    - Guide developers (and AI assistants) to avoid problematic implementations
+    - Try to avoid poor code, when possible
+
+  # Específicos do Python
+  python:
+    - Uso de except: sem especificar exceções
+    - Import * (from module import *)
+    - Uso de eval() ou exec() sem necessidade
+    - Mutação de parâmetros padrão (def func(a=[]))
+    - Uso de métodos privados do Python (prefixo _) fora da classe
+    - Uso de globals() ou locals()
+    - Uso de assert em código de produção
+    - Uso de threading quando async/await é mais apropriado
+    - Uso de tipos dinâmicos quando tipagem estática é possível
+    - Reject deprecated internal modules
+
+  # Específicos do FastAPI
+  fastapi:
+    - Lógica de negócios dentro de rotas (deve estar em services)
+    - Acesso direto ao banco de dados em rotas (usar repositories)
+    - Uso de request.form[] sem validação via Pydantic
+    - Uso de status codes hardcoded (usar HTTPStatus enum)
+    - Dependências circulares entre módulos
+    - Falta de documentação nas rotas da API
+    - Uso de sync_to_async para código que poderia ser nativo async
+
+  # Específicos de Frontend
+  frontend:
+    - Manipulação direta do DOM quando frameworks estão disponíveis
+    - Uso de setTimeout para sincronização de UI
+    - Event listeners não removidos (memory leaks)
+    - Estilos inline quando CSS externo é preferível
+    - Código JavaScript não modularizado
+    - Falta de tratamento de erros em chamadas de API

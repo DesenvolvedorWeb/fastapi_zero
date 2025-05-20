@@ -12,8 +12,9 @@ app.mount('/static', StaticFiles(directory='static'), name='static')
 
 # Incluir routers
 app.include_router(pages.router)
-app.include_router(api.router, prefix="/api")
+app.include_router(api.router, prefix='/api')
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     import uvicorn
-    uvicorn.run("fastapi_zero.main:app", host="0.0.0.0", port=8000, reload=True)
+
+    uvicorn.run('fastapi_zero.main:app', host='0.0.0.0', port=8000, reload=True)

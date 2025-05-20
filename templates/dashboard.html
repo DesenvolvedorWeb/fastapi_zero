@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -28,15 +29,15 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
             <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                <div class="text-5xl font-bold text-primary">{{ stats.users }}</div>
+                <div class="text-5xl font-bold text-primary stats-users">{{ stats.users }}</div>
                 <div class="text-gray mt-2">Usuários</div>
             </div>
             <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                <div class="text-5xl font-bold text-primary">{{ stats.active }}</div>
+                <div class="text-5xl font-bold text-primary stats-active">{{ stats.active }}</div>
                 <div class="text-gray mt-2">Ativos</div>
             </div>
             <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                <div class="text-5xl font-bold text-primary">{{ stats.requests }}</div>
+                <div class="text-5xl font-bold text-primary stats-requests">{{ stats.requests }}</div>
                 <div class="text-gray mt-2">Requisições</div>
             </div>
         </div>
@@ -45,8 +46,162 @@
             <div class="text-xl font-semibold mb-4 text-primary">Informações do Sistema</div>
             <p class="mb-2">Versão: {{ version }}</p>
             <p class="mb-2">Ambiente: {{ environment }}</p>
-            <p>Data: {{ current_date }}</p>
+            <p>Data: <span id="current-date">{{ current_date }}</span></p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <div class="text-xl font-semibold text-primary">Status da API</div>
+                <button id="refresh-btn" class="bg-primary hover:bg-primary-dark text-white px-3 py-1 rounded text-sm transition-colors">
+                    Atualizar
+                </button>
+            </div>
+            <div id="api-status" class="text-gray">Carregando status...</div>
+            <div id="last-updated" class="text-sm text-gray mt-2"></div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="text-xl font-semibold mb-4 text-primary">Informações do Usuário</div>
+            <div id="user-info" class="text-gray">Carregando informações do usuário...</div>
+            <button id="login-btn" class="mt-4 bg-primary hover:bg-primary-dark text-white px-3 py-1 rounded text-sm transition-colors">
+                Verificar Autenticação
+            </button>
         </div>
     </div>
+
+    <!-- Scripts movidos para o final do body -->
+    <script>
+        // Estado de carregamento
+        let isLoading = false;
+
+        // Função para formatar data
+        function formatDateTime() {
+            const now = new Date();
+            return now.toLocaleString('pt-BR');
+        }
+
+        // Função para mostrar indicador de carregamento
+        function showLoading(selector) {
+            const element = document.querySelector(selector);
+            element.innerHTML = '<span class="text-gray animate-pulse">Carregando...</span>';
+        }
+
+        // Função para carregar dados da API
+        async function loadStats() {
+            if (isLoading) return;
+
+            isLoading = true;
+            showLoading('.stats-users');
+            showLoading('.stats-active');
+            showLoading('.stats-requests');
+            document.getElementById('api-status').textContent = 'Atualizando dados...';
+
+            try {
+                // Adiciona credenciais básicas à requisição
+                const credentials = btoa('admin:fastapizero'); // Base64 de "admin:fastapizero"
+                const response = await fetch('/api/stats', {
+                    headers: {
+                        'Authorization': `Basic ${credentials}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    document.getElementById('api-status').textContent = 'Acesso não autorizado';
+                    document.getElementById('api-status').className = 'text-red-600';
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Atualiza os elementos da página com os dados da API
+                    document.querySelector('.stats-users').textContent = data.data.users;
+                    document.querySelector('.stats-active').textContent = data.data.active;
+                    document.querySelector('.stats-requests').textContent = data.data.requests;
+
+                    document.getElementById('api-status').textContent = 'API conectada e funcionando';
+                    document.getElementById('api-status').className = 'text-green-600';
+
+                    // Atualiza horário
+                    document.getElementById('current-date').textContent = formatDateTime();
+                    document.getElementById('last-updated').textContent = `Última atualização: ${formatDateTime()}`;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+                document.getElementById('api-status').textContent = 'Erro ao conectar com a API';
+                document.getElementById('api-status').className = 'text-red-600';
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Configurar atualização periódica (a cada 30 segundos)
+        let updateInterval;
+
+        function startAutoUpdate() {
+            updateInterval = setInterval(loadStats, 30000);
+        }
+
+        function stopAutoUpdate() {
+            clearInterval(updateInterval);
+        }
+
+        // Configurar botão de atualização manual
+        document.getElementById('refresh-btn').addEventListener('click', loadStats);
+
+        // Função para verificar autenticação
+        async function checkAuth() {
+            document.getElementById('user-info').textContent = 'Verificando autenticação...';
+
+            try {
+                const credentials = btoa('admin:fastapizero');
+                const response = await fetch('/api/me', {
+                    headers: {
+                        'Authorization': `Basic ${credentials}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    document.getElementById('user-info').textContent = 'Usuário não autenticado';
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('user-info').innerHTML = `
+                        <p><strong>Usuário:</strong> ${data.data.username}</p>
+                        <p><strong>Função:</strong> ${data.data.role}</p>
+                        <p><strong>Status:</strong> Autenticado</p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erro ao verificar autenticação:', error);
+                document.getElementById('user-info').textContent = 'Erro ao verificar autenticação';
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            startAutoUpdate();
+
+            // Parar atualizações quando a página estiver em segundo plano
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    stopAutoUpdate();
+                } else {
+                    loadStats(); // Atualiza imediatamente quando voltar
+                    startAutoUpdate();
+                }
+            });
+
+            // Configurar botão de verificação de autenticação
+            document.getElementById('login-btn').addEventListener('click', checkAuth);
+
+            // Verificar autenticação ao carregar
+            checkAuth();
+        });
+    </script>
 </body>
 </html>
