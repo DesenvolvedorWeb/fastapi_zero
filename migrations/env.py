@@ -1,9 +1,22 @@
+import sys
+import os
 from logging.config import fileConfig
-
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-
 from alembic import context
+
+from fastapi_zero.core.config import settings
+
+from fastapi_zero.models.models import table_registry
+
+# Adiciona o diretório do app ao sys.path para importar settings e models
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__), '..', 'fastapi_zero'
+        )
+    )
+)
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -14,11 +27,13 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = None
+# Define os metadados de destino para o Alembic
+# Isso permite autogeração de migrations
+
+target_metadata = table_registry.metadata
+
+# Substitui a URL do banco de dados pela definida em settings
+config.set_main_option('sqlalchemy.url', settings.DATABASE_URL)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
