@@ -92,3 +92,21 @@ def test_retorna_lista_de_usuarios(client):
         assert 'username' in user
         assert 'email' in user
         assert 'role' in user
+
+
+def test_consultar_usuario(client):
+    """
+    Testa se a rota /consultar_usuario/{username} retorna os dados
+    corretos do usuário.
+    """
+    username = 'admin'
+    response = client.get(f'/consultar_usuario/{username}')
+    assert response.status_code == HTTPStatus.OK
+    assert f'Consultar Usuário: {username}' in response.text
+    assert 'Veja os detalhes do usuário' in response.text
+    # Verifica se os detalhes do usuário estão presentes no HTML
+    assert username in response.text
+    assert 'user@example.com' in response.text or 'admin@example.com' in response.text
+    assert 'role' in response.text or 'admin' in response.text
+    # campo não exibido diretamente, mas pode ser customizado
+    assert 'created_at' not in response.text
