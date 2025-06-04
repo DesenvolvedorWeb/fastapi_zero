@@ -96,3 +96,65 @@ async def create_user(request: Request):
             'description': 'Preencha os dados para criar um novo usuário',
         },
     )
+
+
+@router.get('/listar_usuarios', response_class=HTMLResponse)
+async def listar_usuarios(request: Request):
+    return templates.TemplateResponse(
+        'listar_usuarios.html',
+        {
+            'request': request,
+            'message': 'Lista de Usuários',
+            'description': 'Visualize todos os usuários cadastrados no sistema',
+            'users': [
+                {'username': 'admin', 'role': 'admin', 'email': 'admin@example.com'},
+                {'username': 'user', 'role': 'user', 'email': 'user@example.com'},
+            ],
+        },
+    )
+
+
+@router.get('/editar_usuario/{username}', response_class=HTMLResponse)
+async def editar_usuario(request: Request, username: str):
+    return templates.TemplateResponse(
+        'editar_usuario.html',
+        {
+            'request': request,
+            'message': f'Editar Usuário: {username}',
+            'description': 'Altere os dados do usuário',
+            'username': username,
+        },
+    )
+
+
+@router.get('/deletar_usuario/{username}', response_class=HTMLResponse)
+async def deletar_usuario(request: Request, username: str):
+    return templates.TemplateResponse(
+        'deletar_usuario.html',
+        {
+            'request': request,
+            'message': f'Deletar Usuário: {username}',
+            'description': 'Confirme a exclusão do usuário',
+            'username': username,
+        },
+    )
+
+
+@router.get('/consultar_usuario/{username}', response_class=HTMLResponse)
+async def consultar_usuario(request: Request, username: str):
+    return templates.TemplateResponse(
+        'consultar_usuario.html',
+        {
+            'request': request,
+            'message': f'Consultar Usuário: {username}',
+            'description': 'Veja os detalhes do usuário',
+            'username': username,
+            'user_details': {
+                'username': username,
+                'role': 'user',
+                'email': 'user@example.com',
+                'created_at': datetime.now().strftime('%d/%m/%Y %H:%M'),
+                'last_login': datetime.now().strftime('%d/%m/%Y %H:%M'),
+            },
+        },
+    )

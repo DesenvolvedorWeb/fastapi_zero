@@ -1,9 +1,9 @@
 # fastapi_zero/schemas/schemas.py
 from datetime import datetime
 from http import HTTPStatus
-from typing import Dict, Optional
+from typing import Dict, Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 
 
 class Message(BaseModel):
@@ -32,3 +32,20 @@ class APIResponse(BaseModel):
     success: bool
     data: Optional[Dict] = None
     error: Optional[str] = None
+
+
+class User(BaseModel):
+    username: str
+    role: str
+    email: EmailStr
+    password: str = Field(..., min_length=8)
+
+
+class AuthenticatedUser(User):
+    authenticated: bool
+
+
+class UserPublic(BaseModel):
+    username: str
+    role: Literal['admin', 'user'] = 'user'
+    email: EmailStr

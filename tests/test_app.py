@@ -77,3 +77,18 @@ def test_rotas_retornam_textos_esperados(client, path, expected_text):
     # Assert
     assert response.status_code == HTTPStatus.OK
     assert expected_text in response.text
+
+
+def test_retorna_lista_de_usuarios(client):
+    """Testa se a rota /api/users retorna uma lista de usuários."""
+    # Act
+    response = client.get('/api/users')
+    # Assert
+    assert response.status_code == HTTPStatus.OK
+    data = response.json()
+    assert isinstance(data, list)  # Verifica se é uma lista
+    assert len(data) > 0  # Verifica se a lista não está vazia
+    for user in data:
+        assert 'username' in user
+        assert 'email' in user
+        assert 'role' in user
